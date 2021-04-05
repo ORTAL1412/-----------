@@ -1,18 +1,14 @@
-
 class User {
-    name;
-    email;
-    age;
-    phone;
-    picture;
-    constructor(_name, _email, _age, _phone, _picture) {
-        this.name = _name;
-        this.email = _email;
-        this.age = _age;
-        this.phone = _phone;
-        this.picture = _picture;
-    };
-};
+    constructor (id, picture, age, name, email, phone){
+        this.id = id;
+        this.picture = picture;
+        this.age = age;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+
+    }
+}
 
 let users = [];
 async function catchProfiles() {
