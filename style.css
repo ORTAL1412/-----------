@@ -1,0 +1,80 @@
+* {
+    padding: 0;
+    margin: 0;
+    
+}
+header {
+    width: 100vw;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+section{
+    display: flex;
+    width: 100vw;
+    min-height: 500px;
+}
+aside{
+    flex-basis:10% ;
+    min-width: 200px;
+}
+main{
+    flex-basis:90% ;
+    padding: 16px;
+}
+footer {
+    width: 100vw;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#student-cards{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.student-card{
+    width: 30%;
+    height: 200px;
+    margin: 16px;
+    background: pink;
+    border: 1px solid purple;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+
+}
+.student-detals{
+    flex-basis: 66%;
+}
+
+.student-img{
+    flex-basis: 33%;
+}
+.student-img img{
+    width: 100px;
+    border-radius: 50%;
+
+}
+#student-table-container{
+    padding: 16px;
+    display: none;
+}
+#student-tabel-container table {
+    width: 90%;
+    border: 1px solid blueviolet;
+}
+#student-tabel-container tr td {
+    border: 1px solid blueviolet;
+}
+
+#userForm {
+    display: block;
+}
+
