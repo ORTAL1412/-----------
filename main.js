@@ -1,105 +1,118 @@
+
 class User {
-    constructor (id, picture, age, name, email, phone){
-        this.id = id;
-        this.picture = picture;
-        this.age = age;
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
+    name;
+    email;
+    age;
+    phone;
+    picture;
+    constructor(_name, _email, _age, _phone, _picture) {
+        this.name = _name;
+        this.email = _email;
+        this.age = _age;
+        this.phone = _phone;
+        this.picture = _picture;
+    };
+};
 
-    }
+let users = [];
+async function catchProfiles() {
+    let comeOut = await fetch('https://next.json-generator.com/api/json/get/NJ-UoW2Xq');
+    let apiUsers = await comeOut.json();
+
+    // const usersInClass = apiUsers.map(apiUser => {
+    //     return new User(`${apiUser.name.first} ${apiUser.name.last}`, apiUser.email,apiUser.age,apiUser.phone,apiUser.picture);
+    // })
+
+    // comeOut.forEach(user=>{
+    //     apiUsers.push(new User(`${user.name.first} ${user.name.last}`, user.email, user.age, user.phone, user.picture))
+    // });
+
+
+    let allUsers = [...apiUsers, ...users];
+    return allUsers;
+};
+ 
+
+let cards;
+async function profiles() {
+    mainDiv.innerHTML = '';
+    cards = await catchProfiles();
+    cards.forEach((card) => {
+        mainDiv.innerHTML +=
+            `<div class='cardProfile' > 
+        <h2>full name:${card.name.first} ${card.name.last}</h2>
+        <h4>email: ${card.email}</h4>
+        <h4>age: ${card.age}</h4>
+        <h4>phone: ${card.phone}</h4>
+        <a href="userCard.html?id=${card._id}"> 
+        <img src='${card.picture}' alt='user pic' />
+       </a>
+        </div>`       
+    });
+
+};
+
+
+addUser.style.display = 'none';
+table.style.display = 'none';
+
+function homePage() {
+    table.style.display = ' none';
+    addUser.style.display = ' none';
+    profiles();
 }
 
-const fetchUsers = async () => {
- const users = await (await fetch ("https://next.json-generator.com/api/json/get/NJ-UoW2Xq")).json();
- const usersArray =[]; 
- users.forEach(user => {
-     usersArray.push(new User(user._id, user.picture, user.age,
-        `${user.name.first} ${user.name.last}`, user.email,
-        user.phone));       
- });
- return usersArray;
-}
-const creatUserCard = (user) => {
-    const studentcard = document.createElement(`div`);
-    studentcard.classList.add (`student-card`);
-    studentcard.innerHTML = `
-    <div class="student-details">
-    <h4>${user.name}</h4>
-    <span> age:${user.age}</span></br>
-    <span> email:${user.email}</span></br>
-    <span> phone:${user.phone}</span></br>
-    <span> ID:${user.id}</span></br>
-    </div>
-    <div class="student-img">
-       <img src=" ${user.picture}" alt="">
-    </div>`
+async function usersTable() {
+    mainDiv.innerHTML = '';
+    table.style.display = 'block';
+    showTable.style = 'display:block;color:#fcf9f6;margin-left: 12%; ';
+    cards = await catchProfiles();
+    cards.forEach(card => {
+        showTable.innerHTML +=
+            `<tr>
+            <td>${card.name.first} ${card.name.last}</td>
+            <td>${card.email}</td>
+            <td>${card.age}</td>
+            <td>${card.phone}</td>
+            <td><img src='${card.picture}'></td>
+          </tr>`
+    });
+    addUser.style.display = "none";
 
-    return studentcard;
+};
 
+function tableProfiles() {
+    showTable.innerHTML = '';
+    usersTable();
 }
 
-const creatUseRow = (user) => {
-    const studentTabelRow = document.createElement(`tr`);
-    studentTabelRow.innerHTML =`
-    
-    <td>${user.name}</td>
-    <td>${user.id}</td>
-    <td>${user.age}</td>
-    <td>${user.email}</td>
-    <td>${user.phone}</td>`
 
-    return studentTabelRow;
-   
-}
-
-function showTable () {
-    const studentcards = document.getElementById(`student-cards`);
-    const studentTabel = document.getElementById(`student-table`);
-    if (studentcards.style.display === 'none'){
-        studentcards.style.display = 'flex';
-        studentTabel.style.display ='none';
+function emailConfirmation() {
+    if (email.value === emailConfirm.value) {
+        return true;
     }
     else {
-        studentcards.style.display = 'none';
-        studentTabel.style.display ='block';
-       
-    }}
-    
-
-
-
- const init  = async () => {
-    const userArray =  await fetchUsers();
-    const studentcards = document.getElementById(`student-cards`);
-   console.log(studentcards);
-    userArray.forEach( user => {
-        studentcards.appendChild(creatUserCard (user));
-    });
+        alert("email address is not the same");
+        return false;
+    }
 }
 
-init ();
+
+function addProfile() {
+    mainDiv.innerHTML = "";
+    table.style.display = "none";
+    addUser.style = 'display:block; margin-left: 12%;';
+    let user = new User({ first: firstName.value, last: lastName.value }, emailConfirm.value, age.value, phone.value, picture.value);
+    return user;
+};
 
 
-function addUser(event) {
-      
-    let user = {
-        _id: `${users.length + 1}`,
-        name: {
-            first: firstNameInput.value,
-            last: lastNameInput.value,
-        },
-
-
-        age: ageInput.value,
-        picture: imgInput.value,
-        phone: phoneNumberInput.value,
-
-    };
-    
-    users.push(user);
-    loadMode();
-   
-
-
+function submit() {
+    users.push(addProfile());
+    addUser.style.display = 'none';
+    profiles();
 }
+
+window.addEventListener('load',profiles);
+// profiles();
+
